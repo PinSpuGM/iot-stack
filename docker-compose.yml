@@ -1,0 +1,90 @@
+# ── IoT Stack ───--------────────────────────────────────────────────────────
+# Services:
+#   emqx        - MQTT broker       → dashboard http://localhost:18083
+#   node-red    - Flow automation   → editor    http://localhost:1880
+#   phpmyadmin  - MySQL GUI         → dashboard http://localhost:5050
+#   mysql       - Database          → port      3306
+# Network: all services share the 'docker' bridge network
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # MQTT broker — receives sensor data from ESP32 devices
+  emqx:
+    image: emqx/emqx:6.2.0-gbc8c29b2
+    container_name: emqx
+    restart: unless-stopped
+    environment:
+      EMQX_DASHBOARD__DEFAULT_USERNAME: admin   # dashboard login
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: admin
+    ports:
+      - '1883:1883'   # MQTT
+      - '8083:8083'   # MQTT over WebSocket
+      - '8883:8883'   # MQTT over SSL
+      - '8084:8084'   # MQTT over WebSocket SSL
+      - '18083:18083' # Dashboard
+    volumes:
+      - emqx_data:/opt/emqx/data
+      - emqx_log:/opt/emqx/log
+    networks:
+      - docker
+
+  # Flow automation — subscribes to MQTT topics and writes to MySQL
+  node-red:
+    image: nodered/node-red:4.1.10-22-minimal
+    container_name: node-red
+    restart: unless-stopped
+    ports:
+      - '1880:1880'   # Node-RED editor
+    volumes:
+      - node_red_data:/data
+    depends_on:
+      - emqx
+    networks:
+      - docker
+
+  # Relational database — stores sensor readings
+  mysql:
+    image: mysql:9.7.0
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+      - '3306:3306'   # MySQL
+    environment:
+      MYSQL_ROOT_PASSWORD: admin   # root password
+      MYSQL_USER:          admin   # app user
+      MYSQL_PASSWORD:      admin
+      MYSQL_DATABASE:      db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - docker
+
+  # MySQL web UI — connects to mysql service on port 3306
+  phpmyadmin:
+    image: phpmyadmin:5.2.3
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - '5050:80'     # phpMyAdmin dashboard
+    environment:
+      PMA_HOST:     mysql   # service name resolves via docker network
+      PMA_PORT:     3306
+      PMA_USER:     admin
+      PMA_PASSWORD: admin
+    depends_on:
+      - mysql
+    networks:
+      - docker
+
+# Named volumes — managed by Docker, persisted across restarts
+volumes:
+  emqx_data:
+  emqx_log:
+  node_red_data:
+  mysql_data:
+
+# Shared bridge network — containers reach each other by service name
+networks:
+  docker:
+    driver: bridge
