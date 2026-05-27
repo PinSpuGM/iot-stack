@@ -1,4 +1,4 @@
-# Bed Room IoT — Docker Environment
+# IoT Stack — Docker Environment
 
 A four-service Docker Compose stack for collecting, processing, and storing IoT sensor data from ESP32 bedroom devices.
 
