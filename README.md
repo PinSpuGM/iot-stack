@@ -92,14 +92,14 @@ IoT Device (ESP32)
 
 ## Volumes
 
-All data is stored in host-bind folders alongside the project directory so files are visible and portable.
+Data is stored in named Docker volumes managed by the Docker engine. Volumes persist across restarts and container re-creation.
 
-| Folder | Service | Container path |
+| Volume | Service | Container path |
 |---|---|---|
-| `./emqx_data` | emqx | `/opt/emqx/data` |
-| `./emqx_log` | emqx | `/opt/emqx/log` |
-| `./node_red_data` | node-red | `/data` |
-| `./mysql_data` | mysql | `/var/lib/mysql` |
+| `emqx_data` | emqx | `/opt/emqx/data` |
+| `emqx_log` | emqx | `/opt/emqx/log` |
+| `node_red_data` | node-red | `/data` |
+| `mysql_data` | mysql | `/var/lib/mysql` |
 
 ## Network
 
