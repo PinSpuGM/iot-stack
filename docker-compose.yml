@@ -1,9 +1,20 @@
-# ── IoT Stack ───--------────────────────────────────────────────────────────
+# ── IoT Stack ────────────────────────────────────────────────────────────────
 # Services:
 #   emqx        - MQTT broker       → dashboard http://localhost:18083
+#                                     port 1883  (MQTT)
+#                                     port 8083  (MQTT over WebSocket)
+#                                     port 8883  (MQTT over SSL)
+#                                     port 8084  (MQTT over WebSocket SSL)
 #   node-red    - Flow automation   → editor    http://localhost:1880
-#   phpmyadmin  - MySQL GUI         → dashboard http://localhost:5050
 #   mysql       - Database          → port      3306
+#   phpmyadmin  - MySQL GUI         → dashboard http://localhost:5050
+#
+# Usage:
+#   docker compose up -d        # start all services in background
+#   docker compose down         # stop and remove containers
+#   docker compose down -v      # stop and also remove volumes
+#   docker compose logs -f      # follow logs from all services
+#
 # Network: all services share the 'docker' bridge network
 # ─────────────────────────────────────────────────────────────────────────────
 
