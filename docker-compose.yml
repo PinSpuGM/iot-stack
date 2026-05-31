@@ -24,8 +24,10 @@ services:
       - '8084:8084'   # MQTT over WebSocket SSL
       - '18083:18083' # Dashboard
     volumes:
-      - emqx_data:/opt/emqx/data
-      - emqx_log:/opt/emqx/log
+#      - emqx_data:/opt/emqx/data     # Use docker volume
+#      - emqx_log:/opt/emqx/log       # Use docker volume
+      - ./emqx_data:/opt/emqx/data   # Use file volume
+      - ./emqx_log:/opt/emqx/log     # Use file volume
     networks:
       - docker
 
@@ -37,7 +39,8 @@ services:
     ports:
       - '1880:1880'   # Node-RED editor
     volumes:
-      - node_red_data:/data
+#      - node_red_data:/data  # Use docker volume
+      - ./node_red_data:/data  # Use file volume
     depends_on:
       - emqx
     networks:
@@ -56,7 +59,8 @@ services:
       MYSQL_PASSWORD:      admin
       MYSQL_DATABASE:      db
     volumes:
-      - mysql_data:/var/lib/mysql
+#      - mysql_data:/var/lib/mysql  # use docker volume
+      - ./mysql_data:/var/lib/mysql  # use file volume
     networks:
       - docker
 
@@ -78,11 +82,11 @@ services:
       - docker
 
 # Named volumes — managed by Docker, persisted across restarts
-volumes:
-  emqx_data:
-  emqx_log:
-  node_red_data:
-  mysql_data:
+#volumes:
+#  emqx_data:
+#  emqx_log:
+#  node_red_data:
+#  mysql_data:
 
 # Shared bridge network — containers reach each other by service name
 networks:
