@@ -8,6 +8,7 @@
 #   node-red    - Flow automation   → editor    http://localhost:1880
 #   mysql       - Database          → port      3306
 #   phpmyadmin  - MySQL GUI         → dashboard http://localhost:5050
+#   grafana     - Metrics dashboard → dashboard http://localhost:3000
 #
 # Usage:
 #   docker compose up -d        # start all services in background
@@ -92,12 +93,24 @@ services:
     networks:
       - docker
 
+  # Metrics dashboard — visualises data from MySQL / other sources
+  grafana:
+    image: grafana/grafana:nightly-slim
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - docker
+
 # Named volumes — managed by Docker, persisted across restarts
 volumes:
   emqx_data:
   emqx_log:
   node_red_data:
   mysql_data:
+  grafana_data:
 
 # Shared bridge network — containers reach each other by service name
 networks:
