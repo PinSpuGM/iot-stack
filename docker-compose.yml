@@ -105,17 +105,6 @@ services:
     networks:
       - docker
 
-  # Metrics dashboard — visualises data from MySQL / other sources
-  grafana:
-    image: grafana/grafana:nightly-slim
-    container_name: grafana
-    ports:
-      - '3000:3000'
-    volumes:
-      - grafana_data:/var/lib/grafana
-    networks:
-      - docker
-
 # Named volumes — managed by Docker, persisted across restarts
 volumes:
   emqx_data:
