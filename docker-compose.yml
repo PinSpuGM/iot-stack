@@ -92,6 +92,18 @@ services:
       - mysql
     networks:
       - docker
+      
+  # Metrics dashboard — visualises data from MySQL / other sources
+  grafana:
+    image: grafana/grafana:nightly-slim
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - '3000:3000'   # Grafana dashboard
+    volumes:
+      - grafana_data:/var/lib/grafana  # use docker volume
+    networks:
+      - docker
 
   # Metrics dashboard — visualises data from MySQL / other sources
   grafana:
