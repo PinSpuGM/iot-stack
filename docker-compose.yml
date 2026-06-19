@@ -20,24 +20,23 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 services:
-
   # MQTT broker — receives sensor data from ESP32 devices
   emqx:
     image: emqx/emqx:6.2.0-gbc8c29b2
     container_name: emqx
     restart: unless-stopped
     environment:
-      EMQX_DASHBOARD__DEFAULT_USERNAME: admin   # dashboard login
+      EMQX_DASHBOARD__DEFAULT_USERNAME: admin # dashboard login
       EMQX_DASHBOARD__DEFAULT_PASSWORD: admin
     ports:
-      - '1883:1883'   # MQTT
-      - '8083:8083'   # MQTT over WebSocket
-      - '8883:8883'   # MQTT over SSL
-      - '8084:8084'   # MQTT over WebSocket SSL
+      - '1883:1883' # MQTT
+      - '8083:8083' # MQTT over WebSocket
+      - '8883:8883' # MQTT over SSL
+      - '8084:8084' # MQTT over WebSocket SSL
       - '18083:18083' # Dashboard
     volumes:
-      - emqx_data:/opt/emqx/data     # Use docker volume
-      - emqx_log:/opt/emqx/log       # Use docker volume
+      - emqx_data:/opt/emqx/data # Use docker volume
+      - emqx_log:/opt/emqx/log # Use docker volume
       # - ./emqx_data:/opt/emqx/data   # Use file volume
       # - ./emqx_log:/opt/emqx/log     # Use file volume
     networks:
@@ -49,9 +48,9 @@ services:
     container_name: node-red
     restart: unless-stopped
     ports:
-      - '1880:1880'   # Node-RED editor
+      - '1880:1880' # Node-RED editor
     volumes:
-      - node_red_data:/data  # Use docker volume
+      - node_red_data:/data # Use docker volume
       # - ./node_red_data:/data  # Use file volume
     depends_on:
       - emqx
@@ -64,14 +63,14 @@ services:
     container_name: mysql
     restart: unless-stopped
     ports:
-      - '3306:3306'   # MySQL
+      - '3306:3306' # MySQL
     environment:
-      MYSQL_ROOT_PASSWORD: admin   # root password
-      MYSQL_USER:          admin   # app user
-      MYSQL_PASSWORD:      admin
-      MYSQL_DATABASE:      db
+      MYSQL_ROOT_PASSWORD: admin # root password
+      MYSQL_USER: admin # app user
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: db
     volumes:
-      - mysql_data:/var/lib/mysql  # use docker volume
+      - mysql_data:/var/lib/mysql # use docker volume
       # - ./mysql_data:/var/lib/mysql  # use file volume
     networks:
       - docker
@@ -82,28 +81,28 @@ services:
     container_name: phpmyadmin
     restart: unless-stopped
     ports:
-      - '5050:80'     # phpMyAdmin dashboard
+      - '5050:80' # phpMyAdmin dashboard
     environment:
-      PMA_HOST:     mysql   # service name resolves via docker network
-      PMA_PORT:     3306
-      PMA_USER:     admin
+      PMA_HOST: mysql # service name resolves via docker network
+      PMA_PORT: 3306
+      PMA_USER: admin
       PMA_PASSWORD: admin
     depends_on:
       - mysql
     networks:
       - docker
-      
+
   # Metrics dashboard — visualises data from MySQL / other sources
-  grafana:
-    image: grafana/grafana:nightly-slim
-    container_name: grafana
-    restart: unless-stopped
-    ports:
-      - '3000:3000'   # Grafana dashboard
-    volumes:
-      - grafana_data:/var/lib/grafana  # use docker volume
-    networks:
-      - docker
+  # grafana:
+  #   image: grafana/grafana:nightly-slim
+  #   container_name: grafana
+  #   restart: unless-stopped
+  #   ports:
+  #     - '3000:3000'   # Grafana dashboard
+  #   volumes:
+  #     - grafana_data:/var/lib/grafana  # use docker volume
+  #   networks:
+  #     - docker
 
 # Named volumes — managed by Docker, persisted across restarts
 volumes:
@@ -111,7 +110,7 @@ volumes:
   emqx_log:
   node_red_data:
   mysql_data:
-  grafana_data:
+  # grafana_data:
 
 # Shared bridge network — containers reach each other by service name
 networks:
