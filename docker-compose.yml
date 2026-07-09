@@ -29,11 +29,11 @@ services:
       EMQX_DASHBOARD__DEFAULT_USERNAME: admin # dashboard login
       EMQX_DASHBOARD__DEFAULT_PASSWORD: admin
     ports:
-      - '1883:1883' # MQTT
-      - '8083:8083' # MQTT over WebSocket
-      - '8883:8883' # MQTT over SSL
-      - '8084:8084' # MQTT over WebSocket SSL
-      - '18083:18083' # Dashboard
+      - 1883:1883 # MQTT
+      - 8083:8083 # MQTT over WebSocket
+      - 8883:8883 # MQTT over SSL
+      - 8084:8084 # MQTT over WebSocket SSL
+      - 18083:18083 # Dashboard
     volumes:
       - emqx_data:/opt/emqx/data # Use docker volume
       # - ./emqx_data:/opt/emqx/data   # Use file volume
@@ -48,7 +48,7 @@ services:
     container_name: node-red
     restart: unless-stopped
     ports:
-      - '1880:1880' # Node-RED editor
+      - 1880:1880 # Node-RED editor
     volumes:
       - node_red_data:/data # Use docker volume
       # - ./node_red_data:/data  # Use file volume
@@ -63,7 +63,7 @@ services:
     container_name: mysql
     restart: unless-stopped
     ports:
-      - '3306:3306' # MySQL
+      - 3306:3306 # MySQL
     environment:
       MYSQL_ROOT_PASSWORD: admin # root password
       MYSQL_USER: admin # app user
@@ -81,7 +81,7 @@ services:
     container_name: phpmyadmin
     restart: unless-stopped
     ports:
-      - '5050:80' # phpMyAdmin dashboard
+      - 5050:80 # phpMyAdmin dashboard
     environment:
       PMA_HOST: mysql # service name resolves via docker network
       PMA_PORT: 3306
@@ -100,13 +100,13 @@ services:
   #   container_name: grafana
   #   restart: unless-stopped
   #   ports:
-  #     - '3000:3000'   # Grafana dashboard
+  #     - 3000:3000   # Grafana dashboard
   #   environment:
   #     GF_SECURITY_ADMIN_USER: admin
   #     GF_SECURITY_ADMIN_PASSWORD: admin
   #     # Optional: public access grafana, set the absolute URI below
   #     # GF_SERVER_ROOT_URL: https://<domain.name>/grafana/
-  #     # GF_SERVER_SERVE_FROM_SUB_PATH: true  
+  #     # GF_SERVER_SERVE_FROM_SUB_PATH: true
   #   volumes:
   #     - grafana_data:/var/lib/grafana  # use docker volume
   #     # - ./grafana_data:/var/lib/grafana  # use file volume
