@@ -119,3 +119,11 @@ Data is stored in named Docker volumes managed by the Docker engine. Volumes per
 ## Network
 
 All services share a single bridge network named `docker`. Containers reach each other by service name (e.g. `mysql:3306`, `emqx:1883`) without needing IP addresses.
+
+---
+
+## Credit
+
+Written and maintained by **Pin Ch.**  
+Department of Computer Science and Software Development Innovation  
+School of Information Technology, Sripatum University
