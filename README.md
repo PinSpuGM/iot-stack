@@ -1,6 +1,6 @@
 # IoT Stack — Docker Environment
 
-A four-service Docker Compose stack for collecting, processing, and storing IoT sensor data from ESP32 devices.
+A four-service Docker Compose stack for collecting, processing, and storing IoT sensor data from ESP32 devices, with an optional Grafana service for metrics dashboards.
 
 ![Architecture Overview](overview.png)
 
@@ -14,12 +14,16 @@ A four-service Docker Compose stack for collecting, processing, and storing IoT 
 | `node-red` | `nodered/node-red:4.1.10-22-minimal` | Flow engine — subscribes to MQTT topics and writes to MySQL |
 | `mysql` | `mysql:9.7.0` | Relational database — stores sensor readings |
 | `phpmyadmin` | `phpmyadmin:5.2.3` | Web UI for MySQL — browse and query sensor data |
+| `grafana` *(disabled)* | `grafana/grafana:nightly-slim` | Metrics dashboard — visualises data from MySQL / other sources |
+
+> **Note:** `grafana` is commented out in `docker-compose.yml` (disabled due to low disk space on host). Uncomment the service block and the `grafana_data` volume to re-enable it.
 
 ### Start-up Order
 
 ```
 emqx → node-red
 mysql → phpmyadmin
+mysql → grafana (disabled)
 ```
 
 ---
@@ -36,16 +40,25 @@ mysql → phpmyadmin
 | `1880` | node-red | HTTP | Node-RED Editor |
 | `3306` | mysql | TCP | MySQL — direct database access |
 | `5050` | phpmyadmin | HTTP | phpMyAdmin |
+| `3000` | grafana | HTTP | Grafana Dashboard *(disabled — see [Services](#services))* |
 
 ### Web UIs
 
 | Interface | URL | Default credentials |
 |---|---|---|
 | EMQX Dashboard | http://localhost:18083 | `admin` / `admin` |
-| Node-RED Editor | http://localhost:1880 | — |
+| Node-RED Editor | http://localhost:1880 | none — set `adminAuth` in `settings.js` to enable |
 | phpMyAdmin | http://localhost:5050 | `admin` / `admin` |
+| Grafana Dashboard *(disabled)* | http://localhost:3000 | `admin` / `admin` |
 
 > **Note:** MySQL credentials — root password: `admin`, app user: `admin` / `admin`, database: `db`.
+
+### Public Access (Reverse Proxy)
+
+phpMyAdmin (and Grafana, once enabled) can be served behind an nginx reverse proxy under a sub-path instead of a raw port. Uncomment and set the relevant env vars in `docker-compose.yml`:
+
+- phpmyadmin: `PMA_ABSOLUTE_URI: https://<domain.name>/phpmyadmin/`
+- grafana: `GF_SERVER_ROOT_URL` and `GF_SERVER_SERVE_FROM_SUB_PATH: true`
 
 ---
 
@@ -84,8 +97,9 @@ IoT Device (ESP32)
     ▼  internal: mysql:3306
   mysql  (Database)
     │
-    ▼
-  phpmyadmin  (DB UI) — http://localhost:5050
+    ├──▼  phpmyadmin  (DB UI) — http://localhost:5050
+    │
+    └──▼  grafana  (Metrics UI, disabled) — http://localhost:3000
 ```
 
 ---
@@ -100,6 +114,7 @@ Data is stored in named Docker volumes managed by the Docker engine. Volumes per
 | `emqx_log` | emqx | `/opt/emqx/log` |
 | `node_red_data` | node-red | `/data` |
 | `mysql_data` | mysql | `/var/lib/mysql` |
+| `grafana_data` *(disabled)* | grafana | `/var/lib/grafana` |
 
 ## Network
 

@@ -111,6 +111,8 @@ services:
   #   volumes:
   #     - grafana_data:/var/lib/grafana  # use docker volume
   #     # - ./grafana_data:/var/lib/grafana  # use file volume
+  #   depends_on:
+  #     - mysql
   #   networks:
   #     - docker
 
