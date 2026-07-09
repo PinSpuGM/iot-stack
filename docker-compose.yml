@@ -88,7 +88,7 @@ services:
       PMA_USER: admin
       PMA_PASSWORD: admin
       # Optional: public access phpMyAdmin, set the absolute URI below
-#      PMA_ABSOLUTE_URI: https://<domain.name/phpmyadmin/
+#      PMA_ABSOLUTE_URI: https://<domain.name>/phpmyadmin/
     depends_on:
       - mysql
     networks:
@@ -101,8 +101,15 @@ services:
   #   restart: unless-stopped
   #   ports:
   #     - '3000:3000'   # Grafana dashboard
+  #   environment:
+  #     - GF_SECURITY_ADMIN_USER=admin
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin
+  #     # Optional: public access grafana, set the absolute URI below
+  #     # - GF_SERVER_ROOT_URL=https://<domain.name>/grafana/
+  #     # - GF_SERVER_SERVE_FROM_SUB_PATH=true  
   #   volumes:
   #     - grafana_data:/var/lib/grafana  # use docker volume
+  #     - ./grafana_data:/var/lib/grafana  # use file volume
   #   networks:
   #     - docker
 
