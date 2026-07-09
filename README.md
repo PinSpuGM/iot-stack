@@ -124,6 +124,6 @@ All services share a single bridge network named `docker`. Containers reach each
 
 ## Credit
 
-Written and maintained by **Pin Ch.**  
+**Pin Ch.** — Developer  
 Department of Computer Science and Software Development Innovation  
 School of Information Technology, Sripatum University
