@@ -85,8 +85,8 @@ services:
     environment:
       PMA_HOST: mysql # service name resolves via docker network
       PMA_PORT: 3306
-      PMA_USER: admin
-      PMA_PASSWORD: admin
+      # PMA_USER: admin
+      # PMA_PASSWORD: admin
       # Optional: public access phpMyAdmin, set the absolute URI below
       # PMA_ABSOLUTE_URI: https://<domain.name>/phpmyadmin/
     depends_on:
