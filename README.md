@@ -2,7 +2,7 @@
 
 A four-service Docker Compose stack for collecting, processing, and storing IoT sensor data from ESP32 devices, with an optional Grafana service for metrics dashboards.
 
-![Architecture Overview](overview.png)
+![Architecture Overview](./overview.png)
 
 ---
 
