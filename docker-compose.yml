@@ -8,7 +8,7 @@
 #   node-red    - Flow automation   → editor    http://localhost:1880
 #   mysql       - Database          → port      3306
 #   phpmyadmin  - MySQL GUI         → dashboard http://localhost:5050
-#   grafana     - Metrics dashboard → dashboard http://localhost:3000
+#   grafana     - Metrics dashboard → dashboard http://localhost:3000 (disabled — see below)
 #
 # Usage:
 #   docker compose up -d        # start all services in background
@@ -95,6 +95,7 @@ services:
       - docker
 
   # Metrics dashboard — visualises data from MySQL / other sources
+  # Disabled: low disk space on host, re-enable once space is freed up
   # grafana:
   #   image: grafana/grafana:nightly-slim
   #   container_name: grafana
